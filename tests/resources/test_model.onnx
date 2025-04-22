@@ -1,0 +1,6 @@
+ONNX-ML-IR-VERSION:7
+producer_name : "GAIA_MATRIX_TEST"
+producer_version : "1.0"
+domain : "ai.gaia-matrix.test"
+model_version : 1
+doc_string : "Test ONNX model for GAIA MATRIX testing"

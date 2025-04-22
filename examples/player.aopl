@@ -1,0 +1,29 @@
+# Example AOPL script for player controller
+# This demonstrates the compact AI-optimized language syntax
+
+# Player Entity Definition
+N ⊢ E〈PlayerEntity〉〈T⊕C⊕I〉 # Entity with Transform, Controller, and Input components
+T: P 0 1 0 → R 0 0 0 → S 1 1 1  # Position, Rotation, Scale
+C: F Move Jump → ⊻ OnUpdate OnCollision  # Functions and event handlers
+I: ⊢ K → M → G  # Keyboard, Mouse, Gamepad input
+
+# Player Controller Component
+N〈PlayerController〉: V ⊢ I → F Move → A Jump → C Collision
+Move: I.K W → T.P z+ 0.1
+Move: I.K S → T.P z- 0.1
+Move: I.K A → T.P x- 0.1
+Move: I.K D → T.P x+ 0.1
+Jump: I.K Space → V.y 5 → ⊿ grounded
+Collision: ⊿ ground → ⊸ grounded true → V.y 0
+
+# Neural Network for Player Animation
+NN〈PlayerAnimator〉: E PlayerEntity → O Animation
+⊸ Model "models/player_animator.onnx"
+⊸ Input V T.R I.K
+⊸ Output "walk" "run" "jump" "idle"
+
+# Model-Controlled Procedural System for Environment Interaction
+〈MCP〉 EnvironmentSystem:
+  ⊸ Model "models/environment_interaction.onnx"
+  ⊸ Parameters PlayerEntity.T.P PlayerEntity.V
+  ⊸ Generate "particles" "sound" "reaction"
