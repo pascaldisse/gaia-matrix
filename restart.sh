@@ -5,8 +5,8 @@
 
 echo "Restarting GAIA MATRIX development server..."
 
-# Kill any existing server process
-pkill -f "python -m http.server 8000" || pkill -f "python -m SimpleHTTPServer 8000" || pkill -f "php -S localhost:8000" || true
+# Find and kill any process using port 8000
+lsof -ti:8000 | xargs kill -9 2>/dev/null || true
 
 # Run the build script to rebuild the web application
 ./build.sh
